@@ -3,6 +3,9 @@ Tensorflow implementation of Capsule Network using slim and recently updated Dat
 
 # Training Results
 <center>
-    <img src="https://github.com/niffler92/capsule-network-tensorflow/blob/master/assets/training_summary.PNG" width="450", height="150")
+    <img src="https://github.com/niffler92/capsule-network-tensorflow/blob/master/assets/training_summary.PNG" width="900", height="300")
 <center/>
 
+<center>
+    <img src="https://github.com/niffler92/capsule-network-tensorflow/blob/master/assets/reconstricted_image.PNG" width="900", height="300")
+<center/>
