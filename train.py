@@ -115,11 +115,11 @@ def evaluate(step, model, val_dataset, num_val_batch, session, summary_writer):
 
 
 def inference(dataset, unique_key):
+    tf.reset_default_graph()
     test_dataset, num_te_batch = build_dataset(dataset, False)
     test_iterator = test_dataset.make_initializable_iterator()
     test_batch = test_iterator.get_next()
 
-    tf.reset_default_graph()
     model = find_class_by_name([models], 'CapsNet')(params)
     model.build_graph()
 
@@ -130,7 +130,7 @@ def inference(dataset, unique_key):
         log_device_placement=False,
         allow_soft_placement=True)
     )
-    restore_session(session, params)
+    restore_session(session, unique_key)
     y_trues = []
     y_preds = []
 
@@ -139,7 +139,7 @@ def inference(dataset, unique_key):
     for i in range(num_te_batch):
         batch_x, batch_y = session.run(test_batch)
         y_pred,  acc_, total_loss_, margin_loss = \
-        session.run([model.pred,  model.accuracy, model.total_loss, model.margin_loss],
+        session.run([model.y_pred,  model.accuracy, model.total_loss, model.margin_loss],
                     feed_dict={model.x: batch_x, model.y: batch_y})  # FIXME
 
         y_trues.extend(batch_y.ravel().tolist())
@@ -217,12 +217,11 @@ def restore_session(session, unique_key):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--gpu_device", default=1, type=int)
+    parser.add_argument("--gpu_device", default=0, type=int)
     parser.add_argument("--dataset", default='mnist', type=str, choices=['mnist', 'fashion_mnist'])
     args = parser.parse_args()
-
     print("Params:")
     [print("{}={}".format(k, v)) for k, v in sorted(params.items())]
     with tf.device("/gpu:{}".format(args.gpu_device)):
-        unique_key = train(args.dataset)
-        inference(args.datasaet, unique_key)
+        #unique_key = train(args.dataset)
+        inference(args.dataset, '33d286')
