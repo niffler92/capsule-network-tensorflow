@@ -158,9 +158,8 @@ class CapsNet(BaseModel):
         # total loss
         self.total_loss = self.margin_loss + self.args['reg_scale'] * self.reconstruction_loss
 
-        self.true = self.y
         self.y_pred = self.argmax_idx
-        corr_pred = tf.equal(self.true, self.y_pred)
+        corr_pred = tf.equal(self.y, self.y_pred)
         self.accuracy = tf.reduce_mean(tf.cast(corr_pred, tf.float32))
 
     def _create_summaries(self):
