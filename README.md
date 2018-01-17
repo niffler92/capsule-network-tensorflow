@@ -1,5 +1,11 @@
 # capsule-network-tensorflow
-Tensorflow implementation of Capsule Network using slim and recently updated Dataset API.
+Tensorflow implementation of Capsule Network using slim and recently updated Dataset API.  
+You can achieve validation accuracy up to ~99.62%.  
+
+
+`python download_data.py --dataset mnist`  
+`python train.py --dataset mnist`  
+
 
 # Training Results
 <center>
@@ -7,5 +13,5 @@ Tensorflow implementation of Capsule Network using slim and recently updated Dat
 <center/>
 
 <center>
-    <img src="https://github.com/niffler92/capsule-network-tensorflow/blob/master/assets/reconstricted_image.PNG" width="900", height="300")
+    <img src="https://github.com/niffler92/capsule-network-tensorflow/blob/master/assets/reconstructed_image.PNG" width="900", height="300")
 <center/>
