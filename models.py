@@ -10,6 +10,10 @@ import common.tf_utils as tf_utils
 from common.tf_utils import get_optimizer
 
 
+"""Reference
+    Caps layer codes implemented in -
+    https://github.com/naturomics/CapsNet-Tensorflow/blob/master/capsNet.py
+"""
 class BaseModel:
     def __init__(self, args):
         self.log = tf.logging
@@ -194,9 +198,6 @@ class CapsNet(BaseModel):
                    is_routing,
                    layer_type
                    ):
-        """Caps layer codes implemented in -
-            https://github.com/naturomics/CapsNet-Tensorflow/blob/master/capsNet.py
-        """
         assert layer_type in ['conv', 'fc']
         # PrimaryCaps for conv
         # DigitCaps for fc
