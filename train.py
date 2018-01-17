@@ -223,5 +223,5 @@ if __name__ == '__main__':
     print("Params:")
     [print("{}={}".format(k, v)) for k, v in sorted(params.items())]
     with tf.device("/gpu:{}".format(args.gpu_device)):
-        #unique_key = train(args.dataset)
-        inference(args.dataset, '33d286')
+        unique_key = train(args.dataset)
+        inference(args.dataset, unique_key)
