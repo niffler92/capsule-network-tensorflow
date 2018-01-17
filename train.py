@@ -16,6 +16,7 @@ from params import params
 def train(dataset):
     train_dataset, num_tr_batch, val_dataset, num_val_batch = build_dataset(dataset, True)
     train_iterator = train_dataset.make_initializable_iterator()
+    train_batch = train_iterator.get_next()
     model = find_class_by_name([models], 'CapsNet')(params)
     model.build_graph()
 
@@ -41,7 +42,8 @@ def train(dataset):
         sess.run(train_iterator.initializer)
 
         for _ in range(num_tr_batch):
-            batch_x, batch_y = sess.run(train_iterator.get_next())
+
+            batch_x, batch_y = sess.run(train_batch)
             _, acc_, total_loss_, margin_loss_, step, summary, y_pred= \
                 sess.run(
                     [model.train_op, model.accuracy, model.total_loss, model.margin_loss,
@@ -86,6 +88,7 @@ def train(dataset):
 
 def evaluate(step, model, val_dataset, num_val_batch, session, summary_writer):
     val_iterator = val_dataset.make_initializable_iterator()
+    val_batch = val_iterator.get_next()
     total_loss = 0
     margin_loss = 0
     acc = 0
@@ -94,7 +97,7 @@ def evaluate(step, model, val_dataset, num_val_batch, session, summary_writer):
 
     session.run(val_iterator.initializer)
     for _ in range(num_val_batch):
-        batch_x, batch_y = session.run(val_iterator.get_next())
+        batch_x, batch_y = session.run(val_batch)
         summary, total_loss_, margin_loss_, acc_, y_pred = session.run(
             [model.summary_valid, model.total_loss, model.margin_loss, model.accuracy,
              model.y_pred], feed_dict={model.x: batch_x, model.y: batch_y})
@@ -114,6 +117,7 @@ def evaluate(step, model, val_dataset, num_val_batch, session, summary_writer):
 def inference(dataset, unique_key):
     test_dataset, num_te_batch = build_dataset(dataset, False)
     test_iterator = test_dataset.make_initializable_iterator()
+    test_batch = test_iterator.get_next()
 
     tf.reset_default_graph()
     model = find_class_by_name([models], 'CapsNet')(params)
@@ -133,7 +137,7 @@ def inference(dataset, unique_key):
     session.run(test_iterator.initializer)
     st = time.time()
     for i in range(num_te_batch):
-        batch_x, batch_y = session.run(test_iterator.get_next())
+        batch_x, batch_y = session.run(test_batch)
         y_pred,  acc_, total_loss_, margin_loss = \
         session.run([model.pred,  model.accuracy, model.total_loss, model.margin_loss],
                     feed_dict={model.x: batch_x, model.y: batch_y})  # FIXME
