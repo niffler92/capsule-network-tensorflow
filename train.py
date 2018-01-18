@@ -108,7 +108,7 @@ def evaluate(step, model, val_dataset, num_val_batch, session, summary_writer):
         y_preds.extend(y_pred.ravel().tolist())
         y_trues.extend(batch_y.ravel().tolist())
 
-    if (summary_writer is not None) and (step % params['step_save_summaries'] == 0):
+    if summary_writer is not None:
         summary_writer.add_summary(summary, global_step=step)
 
     return acc, total_loss, margin_loss
